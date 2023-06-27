@@ -38,7 +38,7 @@ function Tabbed({ content }) {
         <Tab num={3} activeTab={activeTab} onClick={setActiveTab} />
       </div>
 
-      {activeTab <= 2 ? <TabContent item={content.at(activeTab)} /> : <DifferentContent />}
+      {activeTab <= 2 ? <TabContent key={activeTab} item={content.at(activeTab)} /> : <DifferentContent />}
     </div>
   );
 }
