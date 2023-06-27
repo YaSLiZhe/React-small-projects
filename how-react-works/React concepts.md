@@ -8,7 +8,8 @@
 
 ### 2. Fiber Tree
 
-- The Fiber Tree is an internal data structure used by React for efficient UI updates.
+- The [Fiber Tree](https://medium.com/@bendtherules/exploring-react-fiber-tree-20cbf62fe808)
+  ![Fiber Tree](https://miro.medium.com/v2/resize:fit:640/format:webp/1*YX4hjF7NwR33lPJgOnb7_Q.png)(![Alt text](image.png))is an internal data structure used by React for efficient UI updates.
 - It breaks down the work into smaller units called fibers, prioritizes the work, and allows interruption and resumption of tasks.
 - The Fiber Tree helps React manage and organize the work needed to update a web application.
 
