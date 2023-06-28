@@ -53,7 +53,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const query = "sdadawqd";
+  const query = "zhe";
 
   useEffect(function () {
     async function fetchMovies() {
