@@ -49,7 +49,7 @@ const KEY = "93f44850";
 const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [query, setQuery] = useState("nice");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [watched, setWatched] = useState([]);
@@ -90,6 +90,7 @@ export default function App() {
             throw new Error("Movie not found!");
           }
           setMovies(data.Search);
+
           setError("");
         } catch (err) {
           if (err.message !== "AbortError") {
@@ -104,10 +105,11 @@ export default function App() {
         setError("");
         return;
       }
+      handleClose();
       fetchMovies();
-      return () => {
-        controller.abort();
-      };
+      // return () => {
+      //   controller.abort();
+      // };
     },
     [query]
   );
@@ -303,6 +305,21 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       };
     },
     [title]
+  );
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie]
   );
 
   return (
