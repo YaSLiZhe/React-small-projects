@@ -46,14 +46,7 @@ const tempWatchedData = [
   },
 ];
 const KEY = "93f44850";
-// const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-const average = (arr) => {
-  if (!arr || arr.length === 0) {
-    return 0;
-  }
-
-  return arr.reduce((acc, cur) => acc + cur / arr.length, 0);
-};
+const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -62,11 +55,6 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  //BUG waited fixed
-  // const [watched, setWatched] = useState(function () {
-  //   const storedValue = localStorage.getItem("watched");
-  //   return JSON.parse(storedValue);
-  // });
 
   function handleSelectedId(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -263,7 +251,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
-  const isWatched = watched?.map((movie) => movie.imdbID).includes(movie.imdbID);
+  const isWatched = watched.map((movie) => movie.imdbID).includes(movie.imdbID);
   const userMovieRating = watched.find((watchedMovie) => watchedMovie.imdbID === selectedId)?.userRating;
 
   const {
@@ -279,18 +267,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movie;
 
-  // const [isTop, setIsTop] = useState(imdbRating > 8);
-  // console.log(isTop);
-  // useEffect(
-  //   function () {
-  //     setIsTop(imdbRating > 8);
-  //   },
-  //   [imdbRating]
-  // );
-
-  // const isTop = imdbRating > 8;
-  // console.log(isTop);
-
   function handleAdd() {
     const newMovie = {
       imdbID: selectedId,
@@ -304,13 +280,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     onAddWatched(newMovie);
     onCloseMovie();
   }
-
-  // useEffect(
-  //   function () {
-  //     localStorage.setItem("watched", JSON.stringify(watched));
-  //   },
-  //   [watched]
-  // );
 
   useEffect(
     function () {
@@ -435,7 +404,7 @@ function WatchedSummary({ watched }) {
 function WatchedList({ watched, onDeleteWatched }) {
   return (
     <ul className="list">
-      {watched?.map((movie) => (
+      {watched.map((movie) => (
         <WatchedMovie movie={movie} key={movie.imdbID} onDeleteWatched={onDeleteWatched} />
       ))}
     </ul>
