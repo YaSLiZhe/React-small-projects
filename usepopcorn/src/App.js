@@ -175,7 +175,16 @@ function Logo() {
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
   useEffect(function () {
-    inputEl.current.focus();
+    if (document.activeElement === inputEl.current) return;
+    function callback(e) {
+      if (e.code === "Enter") {
+        inputEl.current.focus();
+        setQuery("");
+      }
+    }
+
+    document.addEventListener("keydown", callback);
+    return () => document.removeEventListener();
   }, []);
   return (
     <input
