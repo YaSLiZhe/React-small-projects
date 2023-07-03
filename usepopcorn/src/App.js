@@ -174,18 +174,23 @@ function Logo() {
 }
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
-  useEffect(function () {
-    if (document.activeElement === inputEl.current) return;
-    function callback(e) {
-      if (e.code === "Enter") {
-        inputEl.current.focus();
-        setQuery("");
-      }
-    }
 
-    document.addEventListener("keydown", callback);
-    return () => document.removeEventListener();
-  }, []);
+  useEffect(
+    function () {
+      function callback(e) {
+        if (document.activeElement === inputEl.current) return;
+        if (e.code === "Enter") {
+          inputEl.current.focus();
+          setQuery("");
+        }
+      }
+
+      document.addEventListener("keydown", callback);
+      return () => document.removeEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
+
   return (
     <input
       className="search"
@@ -280,6 +285,8 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const isWatched = watched?.map((movie) => movie.imdbID).includes(movie.imdbID);
   const userMovieRating = watched.find((watchedMovie) => watchedMovie.imdbID === selectedId)?.userRating;
 
+  const counter = useRef(0);
+
   const {
     Title: title,
     Actors: actors,
@@ -314,6 +321,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: counter.current,
     };
     onAddWatched(newMovie);
     onCloseMovie();
@@ -325,6 +333,12 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   //   },
   //   [watched]
   // );
+  useEffect(
+    function () {
+      if (userRating) counter.current++;
+    },
+    [userRating]
+  );
 
   useEffect(
     function () {
