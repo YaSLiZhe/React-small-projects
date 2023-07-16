@@ -1,5 +1,10 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styles from "./City.module.css";
+import { useCities } from "../contexts/CitiesProvider";
+import { useEffect } from "react";
+import Button from "./Button";
+import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -11,67 +16,62 @@ const formatDate = (date) =>
 
 function City() {
   const { id } = useParams();
-  console.log(id);
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const lat = searchParams.get("lat");
-  const lng = searchParams.get("lng");
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "PT",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
-
-  const { cityName, emoji, date, notes } = currentCity;
-
-  return (
-    <div>
-      <h1>City {id}</h1>
-      <h3>
-        Position:{lat},{lng}
-      </h3>
-    </div>
+  const { currentCity, getCity, isLoading } = useCities();
+  const navigate = useNavigate();
+  useEffect(
+    function () {
+      getCity(id);
+    },
+    [id]
   );
 
-  // return (
-  //   <div className={styles.city}>
-  //     <div className={styles.row}>
-  //       <h6>City name</h6>
-  //       <h3>
-  //         <span>{emoji}</span> {cityName}
-  //       </h3>
-  //     </div>
+  const { cityName, emoji, date, notes } = currentCity;
+  if (isLoading) return <Spinner />;
 
-  //     <div className={styles.row}>
-  //       <h6>You went to {cityName} on</h6>
-  //       <p>{formatDate(date || null)}</p>
-  //     </div>
+  return (
+    <div className={styles.city}>
+      <div className={styles.row}>
+        <h6>City name</h6>
+        <h3>
+          <span>
+            <img src={`https://flagsapi.com/${emoji}/flat/24.png`} alt={cityName} />
+          </span>{" "}
+          {cityName}
+        </h3>
+      </div>
 
-  //     {notes && (
-  //       <div className={styles.row}>
-  //         <h6>Your notes</h6>
-  //         <p>{notes}</p>
-  //       </div>
-  //     )}
+      <div className={styles.row}>
+        <h6>You went to {cityName} on</h6>
+        <p>{formatDate(date || null)}</p>
+      </div>
 
-  //     <div className={styles.row}>
-  //       <h6>Learn more</h6>
-  //       <a
-  //         href={`https://en.wikipedia.org/wiki/${cityName}`}
-  //         target="_blank"
-  //         rel="noreferrer"
-  //       >
-  //         Check out {cityName} on Wikipedia &rarr;
-  //       </a>
-  //     </div>
+      {notes && (
+        <div className={styles.row}>
+          <h6>Your notes</h6>
+          <p>{notes}</p>
+        </div>
+      )}
 
-  //     <div>
-  //       <ButtonBack />
-  //     </div>
-  //   </div>
-  // );
+      <div className={styles.row}>
+        <h6>Learn more</h6>
+        <a href={`https://en.wikipedia.org/wiki/${cityName}`} target="_blank" rel="noreferrer">
+          Check out {cityName} on Wikipedia &rarr;
+        </a>
+      </div>
+
+      <div>
+        <Button
+          type="back"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          &larr; Back
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export default City;
