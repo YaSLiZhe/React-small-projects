@@ -23,6 +23,26 @@ app.get("/api/cityList", (req, res) => {
   });
 });
 
+app.get("/api/cityList/:id", (req, res) => {
+  const cityId = parseInt(req.params.id);
+
+  fs.readFile("./data/cities.json", "utf8", (error, data) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: "Failed to retrieve cities" });
+      return;
+    }
+    const cities = JSON.parse(data);
+    const city = cities.cities.find((c) => c.id === cityId);
+
+    if (!city) {
+      res.status(404).json({ error: "City not found" });
+    } else {
+      res.json(city);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log("Server listening on port", port);
 });
