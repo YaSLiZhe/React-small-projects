@@ -21,3 +21,5 @@
 - [React Router and Single-Page Applications](worldwise/notes/ReactRouterandSingle-PageApplications.md)
 
 - [Storing UI State in the URL with React Router](worldwise/notes/URLState.md)
+
+- [Array methods in Javascript](eatnsplit/notes/Arraymethodsjavascript.md)
