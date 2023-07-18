@@ -75,6 +75,44 @@ app.post("/api/cityList", (req, res) => {
   });
 });
 
+// Helper function to find the index of a city by its ID
+function findCityIndexById(citiesArray, cityId) {
+  return citiesArray.findIndex((city) => city.id === cityId);
+}
+
+app.delete("/api/cityList/:id", async (req, res) => {
+  const cityId = parseInt(req.params.id);
+
+  try {
+    // Read the existing data from the JSON file
+    const data = await fs.promises.readFile("./data/cities.json", "utf8");
+
+    // Parse the JSON data
+    const cities = JSON.parse(data);
+
+    // Find the index of the city with the given ID
+    const cityIndex = findCityIndexById(cities.cities, cityId);
+
+    if (cityIndex === -1) {
+      // City not found
+      res.status(404).json({ error: "City not found" });
+      return;
+    }
+
+    // Remove the city from the array
+    cities.cities.splice(cityIndex, 1);
+
+    // Write the updated data back to the JSON file
+    await fs.promises.writeFile("./data/cities.json", JSON.stringify(cities));
+
+    // Return success response
+    res.json({ message: "City deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to delete the city" });
+  }
+});
+
 app.listen(port, () => {
   console.log("Server listening on port", port);
 });
