@@ -22,4 +22,4 @@
 
 - [Storing UI State in the URL with React Router](worldwise/notes/URLState.md)
 
-- [Array methods in Javascript](eatnsplit/notes/Arraymethodsjavascript.md)
+- [Array methods in Javascript](eat-n-split/notes/Arraymethodsjavascript.md)
