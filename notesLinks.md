@@ -23,3 +23,5 @@
 - [Storing UI State in the URL with React Router](worldwise/notes/URLState.md)
 
 - [Array methods in Javascript](eat-n-split/notes/Arraymethodsjavascript.md)
+
+- [Understanding of useMemo](the%20atomic%20blog/notes/useMemo.md)
