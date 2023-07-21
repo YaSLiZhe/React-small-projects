@@ -25,3 +25,5 @@
 - [Array methods in Javascript](eat-n-split/notes/Arraymethodsjavascript.md)
 
 - [Understanding of useMemo](the%20atomic%20blog/notes/useMemo.md)
+
+- [Understanding of useMemo and useCallback](the%20atomic%20blog/notes/useMemoanduseCallback.md)
